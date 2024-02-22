@@ -59,11 +59,6 @@ class Quiz {
     return total/this.questions.length
   }
 
-  // averageDifficulty() {
-  //   let sumOfDifficulty = this.questions.reduce((acc, currentQuestion) => acc + currentQuestion.difficulty, 0)
-    
-  //   return Math.round(sumOfDifficulty / this.questions.length)
-  // }
 
 }
 
