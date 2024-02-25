@@ -4,12 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const quizView = document.querySelector("#quizView");
   const endView = document.querySelector("#endView");
 
+ 
+
   // Quiz view elements
   const progressBar = document.querySelector("#progressBar");
   const questionCount = document.querySelector("#questionCount");
   const questionContainer = document.querySelector("#question");
   const choiceContainer = document.querySelector("#choices");
   const nextButton = document.querySelector("#nextButton");
+  const restartBtn = document.querySelector("#restartButton");
 
   // End view elements
   const resultContainer = document.querySelector("#result");
@@ -169,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
         choices.innerHTML = `<input type="radio" name="choice" value="${currentChoice}"><label>${currentChoice}</label><br>`;
         choiceContainer.appendChild(choices);
       }
+    
     );
 // *******************************
     // Hint 1: You can use the `document.createElement()` method to create a new element.
@@ -192,6 +196,8 @@ document.addEventListener("DOMContentLoaded", () => {
     allChoiceElement.forEach((choice, index) => {
       if (choice.checked === true) {
         selectedAnswer = choice.value;
+        quiz.checkAnswer(selectedAnswer);
+       // console.log(selectedAnswer)
       }
     });
     // *******************************
@@ -200,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Check if selected answer is correct by calling the quiz method `checkAnswer()` with the selected answer.
     // Move to the next question by calling the quiz method `moveToNextQuestion()`.
     // Show the next question by calling the function `showQuestion()`.
-    quiz.checkAnswer(selectedAnswer);
+    
     quiz.moveToNextQuestion();
     showQuestion();
   }
@@ -215,6 +221,19 @@ document.addEventListener("DOMContentLoaded", () => {
     endView.style.display = "flex";
 
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
-    resultContainer.innerText = `You scored 1 out of 1 correct answers!`; // This value is hardcoded as a placeholder
+    resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`; // This value is hardcoded as a placeholder
   }
+
+  restartBtn.addEventListener('click', () => {
+    endView.style.display = "none";
+    quizView.style.display = "flex";
+    quiz.currentQuestionIndex= 0;
+    quiz.correctAnswers= 0;
+    quiz.shuffleQuestions();
+    showQuestion();
+    quiz.timeRemaining = quizDuration;
+    updateTimer();
+    startTimer();
+  })
+
 });
